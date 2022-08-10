@@ -34,10 +34,12 @@ const generateFile = (data, currentModuleName, projectId) => {
         api.apiID
       }&projectName=%E3%80%90golang%E3%80%91%E5%9F%8B%E7%82%B9%E7%B3%BB%E7%BB%9F&projectID=${projectId}
   */
-  export async function ${apiName}(params: API.${ApiName}Params${pathParams}): Promise<API.${ApiName}Responce> {
+  export async function ${apiName}(params: API.${ApiName}Params${pathParams}) {
       return request.${
         apiRequestTypeDict[api.apiRequestType][0]
-      }(\`${pathParamsUrl}\`, ${apiRequestTypeDict[api.apiRequestType][1]})
+      }<API.${ApiName}Responce>(\`${pathParamsUrl}\`, ${
+        apiRequestTypeDict[api.apiRequestType][1]
+      })
   }`;
       return temp;
     })
