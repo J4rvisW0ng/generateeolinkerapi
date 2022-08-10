@@ -37,7 +37,7 @@ const generateFile = (data, currentModuleName, projectId) => {
   export async function ${apiName}(params: API.${ApiName}Params${pathParams}) {
       return request.${
         apiRequestTypeDict[api.apiRequestType][0]
-      }<API.${ApiName}Responce>(\`${pathParamsUrl}\`, ${
+      }<API.${ApiName}Response>(\`${pathParamsUrl}\`, ${
         apiRequestTypeDict[api.apiRequestType][1]
       })
   }`;
@@ -82,10 +82,10 @@ const generateTypeFile = async (data, currentModuleName, projectId) => {
         )(requestObj)}`;
         let respObj = getJsonDataFromApi(resultInfo);
 
-        params += `\n       type ${ApiName}Responce = ${
+        params += `\n       type ${ApiName}Response = ${
           // 只有返回参数是对象类型才进入解析
           typeof respObj.data === "object"
-            ? handleGenerateResponceType(resultInfo)(respObj.data)
+            ? handleGenerateResponseType(resultInfo)(respObj.data)
             : respObj.data || "any"
         } ${respObj.data && respObj.data.isArray ? "[]" : ""}`;
 
@@ -116,14 +116,14 @@ const generateTypeFile = async (data, currentModuleName, projectId) => {
  * @param {*} resultInfo
  * @returns
  */
-function handleGenerateResponceType(resultInfo) {
+function handleGenerateResponseType(resultInfo) {
   function findRespType(keys) {
     let res = resultInfo.find((item) => {
       return item.paramKey == keys;
     });
     return res || { paramName: "" };
   }
-  const generateResponceType = (data, paramKey = "data") => {
+  const generateResponseType = (data, paramKey = "data") => {
     data = data || {};
     let params = [];
     for (let key in data) {
@@ -142,7 +142,7 @@ function handleGenerateResponceType(resultInfo) {
           // }
         } else {
           params.push(
-            `'${key}': ${generateResponceType(
+            `'${key}': ${generateResponseType(
               data[key],
               paramKey + ">>" + key
             )}${data[key].isArray ? "[]" : ""}`
@@ -155,7 +155,7 @@ function handleGenerateResponceType(resultInfo) {
     }
     return `{\n${params.join(",\n")}}`;
   };
-  return generateResponceType;
+  return generateResponseType;
 }
 
 /**
@@ -170,7 +170,7 @@ function handleGenerateRequestType(resultInfo) {
     });
     return res || { paramName: "" };
   }
-  const generateResponceType = (data, paramKey = "") => {
+  const generateResponseType = (data, paramKey = "") => {
     data = data || {};
     let params = [];
     for (let key in data) {
@@ -195,7 +195,7 @@ function handleGenerateRequestType(resultInfo) {
           params.push(
             `${comment ? "/** " + comment + " */ \n" : ""}'${key}'${
               respType.paramNotNull == "1" ? "?" : ""
-            }: ${generateResponceType(data[key], key + ">>")}${
+            }: ${generateResponseType(data[key], key + ">>")}${
               data[key].isArray ? "[]" : ""
             }`
           );
@@ -207,7 +207,7 @@ function handleGenerateRequestType(resultInfo) {
     }
     return `{\n${params.join(",\n")}}`;
   };
-  return generateResponceType;
+  return generateResponseType;
 }
 
 module.exports = {

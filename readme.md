@@ -55,7 +55,7 @@ import request from "./request";
 export async function projectDelete(
   params: API.ProjectDeleteParams,
   project_id: string
-): Promise<API.ProjectDeleteResponce> {
+): Promise<API.ProjectDeleteResponse> {
   return request.post(`/project/delete/${project_id}`, params);
 }
 /**
@@ -65,7 +65,7 @@ export async function projectDelete(
 export async function projectUpdate(
   params: API.ProjectUpdateParams,
   project_id: string
-): Promise<API.ProjectUpdateResponce> {
+): Promise<API.ProjectUpdateResponse> {
   return request.post(`/project/update/${project_id}`, params);
 }
 /**
@@ -74,7 +74,7 @@ export async function projectUpdate(
  */
 export async function projectList(
   params: API.ProjectListParams
-): Promise<API.ProjectListResponce> {
+): Promise<API.ProjectListResponse> {
   return request.get(`/project/list`, { params });
 }
 /**
@@ -83,7 +83,7 @@ export async function projectList(
  */
 export async function projectAdd(
   params: API.ProjectAddParams
-): Promise<API.ProjectAddResponce> {
+): Promise<API.ProjectAddResponse> {
   return request.post(`/project/add`, params);
 }
 /**
@@ -92,7 +92,7 @@ export async function projectAdd(
  */
 export async function staffList(
   params: API.StaffListParams
-): Promise<API.StaffListResponce> {
+): Promise<API.StaffListResponse> {
   return request.get(`/staff/list`, { params });
 }
 ```
@@ -105,7 +105,7 @@ declare namespace API {
     /** 项目物理ID */
     id: number;
   };
-  type ProjectDeleteResponce = any;
+  type ProjectDeleteResponse = any;
   type ProjectUpdateParams = {
     /** 项目物理ID */
     id: number;
@@ -126,7 +126,7 @@ declare namespace API {
     /** 管理员集合get,post：manager_staff_ids=1&manager_staff_ids=2，json：[] */
     manager_staff_ids?: (number | string)[];
   };
-  type ProjectUpdateResponce = any;
+  type ProjectUpdateResponse = any;
   type ProjectListParams = {
     /** 是否启用 */
     is_valid?: 1 /** 启用 */ | 0 /** 暂停 */;
@@ -147,7 +147,7 @@ declare namespace API {
     /** 返回类型 */
     resp_type?: "list" /** 列表 */ | "table" /** 表格 */;
   };
-  type ProjectListResponce = {
+  type ProjectListResponse = {
     total: string;
     table_header: {
       group_id: string;
@@ -192,7 +192,7 @@ declare namespace API {
     /** 管理员ids集合 get,post：manager_staff_ids=1&manager_staff_ids=2，json：[] */
     manager_staff_ids?: (number | string)[];
   };
-  type ProjectAddResponce = any;
+  type ProjectAddResponse = any;
   type StaffListParams = {
     /** 关键字 */
     keyword: string;
@@ -201,7 +201,7 @@ declare namespace API {
     /** 条数 */
     per_page?: number;
   };
-  type StaffListResponce = {
+  type StaffListResponse = {
     total: string;
     data: {
       staff_id: string;
