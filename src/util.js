@@ -141,9 +141,9 @@ const getApiName = (uri, apiRequestType) => {
     .slice(length * -1) //动态截取
     .join("_");
   apiName = apiName == "delete" ? "remove" : apiName;
-  // 下划线转大驼峰
+  // "-" "_" 转大驼峰
   apiName = apiName
-    .split("_")
+    .split(/-|_/)
     .map((i) => i.replace(/^\w/, ($0) => $0.toUpperCase()))
     .join("");
   const methodName = isRestfulApi
